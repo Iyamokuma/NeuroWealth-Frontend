@@ -32,7 +32,7 @@ test("ImageCrop — move region is keyboard focusable with group role", () => {
   const { getByRole } = utils;
 
   const moveRegion = getByRole("group", {
-    name: /arrow keys move the crop area/i,
+    name: /move crop area/i,
   });
   assert.equal(moveRegion.getAttribute("tabindex"), "0");
   cleanup();
@@ -59,7 +59,7 @@ test("ImageCrop — arrow keys on move region call onCropChange", () => {
   const { getByRole } = utils;
 
   const moveRegion = getByRole("group", {
-    name: /arrow keys move the crop area/i,
+    name: /move crop area/i,
   });
   moveRegion.focus();
   fireEvent.keyDown(moveRegion, { key: "ArrowRight" });
@@ -96,7 +96,7 @@ test("ImageCrop — non-arrow keys on move region do not change crop", () => {
   const { getByRole } = utils;
 
   const moveRegion = getByRole("group", {
-    name: /arrow keys move the crop area/i,
+    name: /move crop area/i,
   });
   moveRegion.focus();
   fireEvent.keyDown(moveRegion, { key: "Tab" });

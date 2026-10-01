@@ -89,6 +89,13 @@ function isCropArrowKey(key: string): boolean {
   return key === "ArrowUp" || key === "ArrowDown" || key === "ArrowLeft" || key === "ArrowRight";
 }
 
+function handleMaxSizePercent(h: Handle, crop: CropState): number {
+  return Math.round(Math.min(
+    h.includes("w") ? crop.x + crop.size : 1 - crop.x,
+    h.includes("n") ? crop.y + crop.size : 1 - crop.y,
+  ) * 100);
+}
+
 interface CropState {
   x: number; y: number; size: number;
 }
@@ -252,7 +259,8 @@ export default function ImageCrop({
             <div
               role="group"
               tabIndex={0}
-              aria-label="Crop selection. Arrow keys move the crop area; hold Shift for larger steps."
+              aria-label="Move crop area"
+              aria-description="Use the arrow keys to move the crop area. Hold Shift to move farther."
               style={{
                 position: "absolute",
                 left, top,
@@ -283,9 +291,11 @@ export default function ImageCrop({
                   role="slider"
                   tabIndex={0}
                   aria-label={HANDLE_LABELS[h]}
-                  aria-valuenow={Math.round(crop.size * 100)}
                   aria-valuemin={10}
-                  aria-valuemax={100}
+                  aria-valuemax={handleMaxSizePercent(h, crop)}
+                  aria-valuenow={Math.round(crop.size * 100)}
+                  aria-valuetext={`${Math.round(crop.size * 100)}% crop size`}
+                  aria-orientation="horizontal"
                   onMouseDown={(e) => onMouseDown(e, h)}
                   onTouchStart={(e) => onMouseDown(e, h)}
                   onKeyDown={(e) => onCropKeyDown(e, h)}
